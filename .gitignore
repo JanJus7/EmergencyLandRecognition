@@ -221,3 +221,5 @@ __marimo__/
 *.fdb_latexmk
 *.synctex.gz
 *.synctex*
+*.fls
+*.toc
