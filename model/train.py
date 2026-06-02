@@ -7,7 +7,37 @@ from prepareDataset import train_loader, val_loader, test_loader
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f"Using device: {device}")
-    
+
+patience = 5
+delta = 0.01
+best_val_loss = float("inf")
+no_improvement_count = 0
+
+class EarlyStopping:
+    def __init__(self, patience=5, delta=0.01, verbose=False):
+        self.patience = patience
+        self.delta = delta
+        self.verbose = verbose
+        self.best_loss = None
+        self.no_improvement_count = 0
+        self.early_stop = False
+
+    def check_early_stop(self, val_loss, model):
+        if self.best_loss is None:
+            self.best_loss = val_loss
+            self.no_improvement_count = 0
+            torch.save(model.state_dict(), 'resnet18_finetuned.pth')
+
+        elif val_loss < self.best_loss - self.delta:
+            self.best_loss = val_loss
+            self.no_improvement_count = 0
+            torch.save(model.state_dict(), 'resnet18_finetuned.pth')
+        else:
+            self.no_improvement_count += 1
+            if self.no_improvement_count >= self.patience:
+                self.early_stop = True
+                if self.verbose:
+                    print("Stopping early as no improvement has been observed.")
 
 model = models.resnet18(pretrained=True)
 for param in model.parameters():
@@ -25,8 +55,13 @@ for name, param in model.named_parameters():
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.fc.parameters(), lr=0.001)
 
+early_stopping = EarlyStopping(patience=patience, delta=delta, verbose=True)
 
-for epoch in range(1, 11):
+for epoch in range(1, 100):
+
+    train_loss = 0.0
+    val_loss = 0.0
+
     model.train()
     running_loss = 0.0
 
@@ -40,20 +75,39 @@ for epoch in range(1, 11):
         loss.backward()
         optimizer.step()
 
+        train_loss += loss.item()
+
         running_loss += loss.item() * images.size(0)
     epoch_loss = running_loss / len(train_loader.dataset)
 
-    print(f"Epoch {epoch}/10, Loss: {epoch_loss:.4f}")
+    print(f"Epoch {epoch}/100, Loss: {epoch_loss:.4f}")
 
     model.eval()
-    val_loss = 0.0
+
+    correct = 0
+    total = 0
+
     with torch.no_grad():
         for images, labels in val_loader:
             images, labels = images.to(device), labels.to(device)
 
             outputs = model(images)
             loss = criterion(outputs, labels)
+            _, predicted = torch.max(outputs.data, 1)
+
+            correct += (predicted == labels).sum().item()
+            total += labels.size(0)
+
+            accuracy = correct / total
             val_loss += loss.item() * images.size(0)
 
+
     val_loss /= len(val_loader.dataset)
-    print(f"Epoch {epoch}/10, Validation Loss: {val_loss:.4f}")
+
+    early_stopping.check_early_stop(val_loss, model)
+
+    print(f"Epoch {epoch}/100, Val Loss: {val_loss:.4f}, Val Accuracy: {accuracy:.4f}")
+
+    if early_stopping.early_stop:
+        print(f"Early stopping at epoch {epoch}")
+        break
