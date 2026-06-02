@@ -16,7 +16,14 @@ if image is None:
 
 step_size = 112
 
-print(f"Entry quality: {image.shape[1]}x{image.shape[0]}")
+print(f"Entry resolution: {image.shape[1]}x{image.shape[0]}")
+
+pad_bottom = (step_size - ((image.shape[0] - winH) % step_size)) % step_size
+pad_right = (step_size - ((image.shape[1] - winW) % step_size)) % step_size
+
+image = cv2.copyMakeBorder(image, 0, pad_bottom, 0, pad_right, cv2.BORDER_CONSTANT, value=[0, 0, 0])
+
+print(f"Resolution after padding: {image.shape[1]}x{image.shape[0]}")
 
 for (x, y, window) in slidingWindow(image, stepSize=step_size, windowSize=(winW, winH)):
     if window.shape[0] != winH or window.shape[1] != winW:
