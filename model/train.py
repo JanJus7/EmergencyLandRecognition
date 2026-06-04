@@ -9,7 +9,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {device}")
 
 patience = 5
-delta = 0.01
+delta = 0.001
 best_val_loss = float("inf")
 no_improvement_count = 0
 
@@ -41,21 +41,27 @@ class EarlyStopping:
                     print("Stopping early as no improvement has been observed.")
 
 
-model = models.resnet18(pretrained=True)
+model = models.resnet18(weights=models.ResNet18_Weights.DEFAULT)
 for param in model.parameters():
     param.requires_grad = False
+
+for param in model.layer3.parameters():
+    param.requires_grad = True
+for param in model.layer4.parameters():
+    param.requires_grad = True
 
 model.fc = nn.Linear(model.fc.in_features, 10)
 
 model = model.to(device)
 
-print(model)
-
+print("Layer Status (True = Learning, False = Frozen):")
 for name, param in model.named_parameters():
-    print(f"{name}: requires_grad={param.requires_grad}")
+    if param.requires_grad:
+        print(f"{name}: requires_grad={param.requires_grad}")
 
 criterion = nn.CrossEntropyLoss()
-optimizer = torch.optim.Adam(model.fc.parameters(), lr=0.001)
+
+optimizer = torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=1e-4)
 
 early_stopping = EarlyStopping(patience=patience, delta=delta, verbose=True)
 
