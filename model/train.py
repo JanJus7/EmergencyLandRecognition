@@ -5,13 +5,14 @@ from torchvision import models
 from torch.utils.data import DataLoader
 from prepareDataset import train_loader, val_loader, test_loader
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {device}")
 
 patience = 5
 delta = 0.01
 best_val_loss = float("inf")
 no_improvement_count = 0
+
 
 class EarlyStopping:
     def __init__(self, patience=5, delta=0.01, verbose=False):
@@ -26,18 +27,19 @@ class EarlyStopping:
         if self.best_loss is None:
             self.best_loss = val_loss
             self.no_improvement_count = 0
-            torch.save(model.state_dict(), 'resnet18_finetuned.pth')
+            torch.save(model.state_dict(), "resnet18_finetuned.pth")
 
         elif val_loss < self.best_loss - self.delta:
             self.best_loss = val_loss
             self.no_improvement_count = 0
-            torch.save(model.state_dict(), 'resnet18_finetuned.pth')
+            torch.save(model.state_dict(), "resnet18_finetuned.pth")
         else:
             self.no_improvement_count += 1
             if self.no_improvement_count >= self.patience:
                 self.early_stop = True
                 if self.verbose:
                     print("Stopping early as no improvement has been observed.")
+
 
 model = models.resnet18(pretrained=True)
 for param in model.parameters():
@@ -100,7 +102,6 @@ for epoch in range(1, 100):
 
             accuracy = correct / total
             val_loss += loss.item() * images.size(0)
-
 
     val_loss /= len(val_loader.dataset)
 
