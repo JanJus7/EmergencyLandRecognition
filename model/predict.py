@@ -4,6 +4,7 @@ import torch
 from torch import nn
 from torchvision import models, transforms
 import matplotlib.pyplot as plt
+import argparse
 
 class_names = [
     "AnnualCrop", "Forest", "HerbaceousVegetation", "Highway", 
@@ -31,27 +32,50 @@ transform = transforms.Compose([
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
 
-# this one is an option for cessna 152
-landing_scores = {
-    "AnnualCrop": 0.9,
-    "Forest": 0.0,
-    "HerbaceousVegetation": 0.8,
-    "Highway": 0.9,
-    "Industrial": 0.0,
-    "Pasture": 1.0,
-    "PermanentCrop": 0.9,
-    "Residential": 0.0,
-    "River": 0.2,
-    "SeaLake": 0.2
-}
+parser = argparse.ArgumentParser(description="Predykcja stref lądowania awaryjnego.")
+parser.add_argument("-a", "--aircraft", choices=["c152", "b737"], required=True, 
+                    help="Wybór statku powietrznego: c152 (Cessna 152) lub b737 (Boeing 737-800)")
+parser.add_argument("-i", "--image", type=str, default="bay",
+                    help="Ścieżka do obrazu satelitarnego do analizy (domyślnie: bay)")
+args = parser.parse_args()
 
-imgPath = "data/gEarth/gd2.jpg"
+if args.aircraft == "c152":
+    print("Cessna 152 (Light General Aviation Aircraft) profile selected.")
+    landing_scores = {
+        "AnnualCrop": 0.9, 
+        "Forest": 0.0, 
+        "HerbaceousVegetation": 0.8,
+        "Highway": 0.9, 
+        "Industrial": 0.0, 
+        "Pasture": 1.0,
+        "PermanentCrop": 0.9, 
+        "Residential": 0.0, 
+        "River": 0.2, 
+        "SeaLake": 0.2
+    }
+else:
+    print("Boeing 737-800 (Heavy Jet Passenger Aircraft) profile selected.")
+    landing_scores = {
+        "AnnualCrop": 0.1,
+        "Forest": 0.0,
+        "HerbaceousVegetation": 0.1,
+        "Highway": 0.8,
+        "Industrial": 0.0,
+        "Pasture": 0.0,
+        "PermanentCrop": 0.1,
+        "Residential": 0.0,
+        "River": 0.6,
+        "SeaLake": 0.5
+    }
+
+imgPath = f"data/gEarth/{args.image}_acc_r.jpg"
 image = cv2.imread(imgPath)
 
 if image is None:
     print(f"Error: Could not read image from {imgPath}...")
     exit()
 
+orig_h, orig_w = image.shape[0], image.shape[1]
 (winW, winH) = (224, 224)
 
 step_size = 112
@@ -122,11 +146,17 @@ if len(batch_tensors) > 0:
 
 print("Terrain scanning completed. Generating heatmap...")
 
-heatmap = heatmap / np.maximum(counter, 1)
-heatmap_uint8 = (heatmap * 255).astype(np.uint8)
-heatmap_color = cv2.applyColorMap(heatmap_uint8, cv2.COLORMAP_JET)
+heatmap = heatmap[:orig_h, :orig_w]
+counter = counter[:orig_h, :orig_w]
+image_clean = image[:orig_h, :orig_w]
 
-overlay = cv2.addWeighted(image, 0.6, heatmap_color, 0.4, 0)
+heatmap = heatmap / np.maximum(counter, 1)
+heatmap = 1.0 - heatmap
+heatmap_uint8 = (heatmap * 255).astype(np.uint8)
+heatmap_blurred = cv2.GaussianBlur(heatmap_uint8, (151, 151), 0)
+heatmap_color = cv2.applyColorMap(heatmap_blurred, cv2.COLORMAP_JET)
+
+overlay = cv2.addWeighted(image_clean, 0.6, heatmap_color, 0.4, 0)
 
 # NEW VERSION.
 
@@ -144,8 +174,10 @@ cbar.set_label('Współczynnik zagrożenia (0.0 = Optymalnie, 1.0 = Krytycznie)'
 ax.axis('off')
 plt.tight_layout()
 
-plt.savefig("landing_heatmap_academic.png", dpi=300, bbox_inches='tight')
-print("Wynik z legendą zapisano jako 'landing_heatmap_academic.png'.")
+if args.aircraft == "c152":
+    plt.savefig(f"data/heatmaps/landing_heatmap_c152_{args.image}.png", dpi=300, bbox_inches='tight')
+else:
+    plt.savefig(f"data/heatmaps/landing_heatmap_b737_{args.image}.png", dpi=300, bbox_inches='tight')
 
 # OLDER VERSION (without legend) leaving it cus I don't know which one to use for the thesis.
 
