@@ -32,7 +32,7 @@ print(f"Running on: {device}")
 model = models.resnet18(weights=None)
 model.fc = nn.Linear(model.fc.in_features, 10)
 model.load_state_dict(
-    torch.load("resnet18_finetuned_V1.pth", map_location=device, weights_only=True)
+    torch.load("resnet18_finetuned_V2.pth", map_location=device, weights_only=True)
 )
 model.to(device)
 model.eval()
