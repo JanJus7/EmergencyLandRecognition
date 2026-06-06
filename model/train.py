@@ -4,6 +4,7 @@ from torch import nn
 from torchvision import models
 from torch.utils.data import DataLoader
 from prepareDataset import train_loader, val_loader, test_loader
+import csv
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {device}")
@@ -65,6 +66,8 @@ optimizer = torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters(
 
 early_stopping = EarlyStopping(patience=patience, delta=delta, verbose=True)
 
+training_history = []
+
 for epoch in range(1, 100):
 
     train_loss = 0.0
@@ -113,8 +116,16 @@ for epoch in range(1, 100):
 
     early_stopping.check_early_stop(val_loss, model)
 
+    training_history.append([epoch, epoch_loss, val_loss, accuracy])
+
     print(f"Epoch {epoch}/100, Val Loss: {val_loss:.4f}, Val Accuracy: {accuracy:.4f}")
 
     if early_stopping.early_stop:
         print(f"Early stopping at epoch {epoch}")
         break
+
+with open("training_history.csv", "w", newline="") as f:
+    writer = csv.writer(f)
+    writer.writerow(["Epoch", "Train_Loss", "Val_Loss", "Val_Accuracy"])
+    writer.writerows(training_history)
+print("Zapisano historię treningu do pliku training_history.csv")
