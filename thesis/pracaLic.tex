@@ -63,6 +63,28 @@ Wdrożenie modelu CNN w systemie lotniczym pozwala na szybkie przystosowanie alg
 
 
 \chapter{Metodologia i przygotowanie zbioru danych}
+\section{Charakterystyka zbioru EuroSat jako środowiska bazowego}
+\par Zbiór \emph{EuroSat} zawiera 27.000 ujednoliconych obrazów o rozmiarze 64 na 64 piksele, manualnie wyselekcjonowanych biorąc pod uwagę wysokość chmur, obecność śniegu czy lodu.\cite{helber_euroSat}  Każda macierz obrazu reprezentuje wycinek terenu o rozdzielczości wynoszącej 10 metrów na piksel. Choć satelita operuje w 13 pasmach, na potrzeby treningu ze zdjęć wyizolowano pasma RGB. Proces ten jest niezbędny do treningu na modelu wyuczonym na ziemskich fotografiach. Zbiór charakteryzuje się równomiernym zbalansowaniem klas (od 2000 do 3000 próbek w obrębie każdej kategorii). Chroni to sieć neuronową przed faworyzacją jednej konkretnej kategorii i daje optymalne rezultaty.
+
+\section{Data splitting i izolacja testowa}
+\par W celu uniknięcia testów sieci neuronowej na danych treningowych, zbiór dzieli się na 3 podzbiory danych w proporcjach 70:15:15. \emph{Data Split} gwarantuje obiektywizm weryfikacji zdolności generalizacyjnych modelu.
+\par Podczas jednego etapu nauki sieć neuronowa korzysta zarówno ze zbioru treningowego, jak i walidacyjnego. Dzięki takiej praktyce model w każdej epoce weryfikuje swoje błędy i zmienia parametry w fazie nauki na zbiorze treningowym. Następnie weryfikuje postępy na zbiorze walidacyjnym i nie zmienia już wag.
+\par Pozwala to między innymi na użycie techniki \emph{Early Stopping}, porównując błąd walidacyjny z pięciu ostatnich epok i zatrzymując proces nauki w razie braku poprawy. Przeciwdziała to niebezpiecznemu zjawisku przeuczenia, podczas którego model zapamiętuje dane treningowe, co powoduje regresję wyników na nowych danych.
+\par Zbiór testowy jest całkowicie odcięty od mechanizmu nauki. Jest użyty tylko raz, zaraz po zakończeniu ostatniej epoki treningu. Pełni on kluczową rolę w ocenie skuteczności predykcji finalnego modelu.
+
+\section{Transformacje tensorowe i normalizacja danych}
+\par Zdjęcia w zbiorze danych są zapisane w rozdzielczości 64 na 64 piksele. Niestety, architektura \emph{ResNet-18}\cite{he_resnet} wymaga obrazów o rozmiarze 224 na 224 piksele. W celu rozwiązania tej niespójności zdjęcie musi zostać przeskalowane. Podczas tego procesu, algorytm interpolacji dwuliniowej wylicza wartości nowych punktów na podstawie sąsiednich pikseli. W efekcie zdjęcie staje się bardziej rozmyte ale zachowuje ciągłość krawędzi. \emph{ResNet-18} pre-trenowany na zbiorze danych \emph{ImageNet} nadal jest w stanie rozpoznać kontury i wykonać poprawne predykcje.
+\par Aby zapobiec predykcji danych na podstawie bardziej wyróżniających się kolorów, wartości pikseli obrazów zostały przekształcone na liczby zmiennoprzecinkowe, a następnie poddane procesowi normalizacji za pomocą średniej i odchylenia standardowego. Zabieg ten centruje dane do rozkładu normalnego o średniej 0 i odchyleniu 1, co drastycznie przyspiesza proces uczenia i obliczania gradientów.\cite{leCun_backprop}
+
+\section{Kalibracja przestrzenna zewnętrznych danych testowych}
+\par Metoda kalibracji obrazów \emph{Ground Sample Distance} pozwala na uzyskanie optymalnych rezultatów i jest możliwa dzięki jednolitej rozdzielczości zdjęć w zbiorze. Wiedząc, że jedna macierz obrazu przed przeskalowaniem zawiera 64 piksele, a każdy piksel obrazuje 10 metrów długości, można wywnioskować, że każde zdjęcie zawiera 640x640 metrów terenu. Wniosek ten jest odpowiedzią dlaczego dla wytrenowanego modelu problemem jest poprawna predykcja autostrady która na większym zdjęciu satelitarnym może mieć około 20 metrów szerokości. Do przeprowadzenia prawidłowej detekcji materiał graficzny pozyskany z oprogramowania \emph{Google Earth} musi zostać poddany skalowaniu przestrzennemu. Wyrażony w procentach współczynnik skalowania można uzyskać porównując stosunek docelowej szerokości okna wejściowego sieci (224px) do rzeczywistej długości odcinka referencyjnego wyrażonej w pikselach, co opisuje równanie \ref{eq:gsd_scale}:
+\begin{equation}
+    \label{eq:gsd_scale}
+    P = \frac{224}{L_{px}} \cdot 100\%
+\end{equation}
+gdzie $L_{px}$ oznacza długość odcinka referencyjnego, odpowiadającą długości 2240 metrów w terenie, zmierzonej bezpośrednio na matrycy wejściowej przed procesem normalizacji.
+
+
 \chapter{Architektura modelu głębokiego uczenia}
 \chapter{Wyniki eksperymentu i podsumowanie}
 \chapter{Wnioski}
@@ -89,8 +111,10 @@ Wdrożenie modelu CNN w systemie lotniczym pozwala na szybkie przystosowanie alg
     Classification}, IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing, Volume: 12, Issue: 7, July 2019, pp. 2217--2226, DOI: 10.1109/JSTARS.2019.2918242.
 \bibitem{he_resnet}
     K. He, X. Zhang, S. Ren, and J. Sun,
-    \emph{Deep Residual Learning for Image Recognition}, 2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR),  27-30 June 2016, DOI: 10.1109/CVPR.2016.90.
-
+    \emph{Deep Residual Learning for Image Recognition}, 2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), Las Vegas, NV, USA, 2016, pp. 770--778 DOI: 10.1109/CVPR.2016.90.
+\bibitem{leCun_backprop}
+    Y. LeCun, L. Bottou, G. B. Orr, and K.-R. M\"{u}ller,
+    \emph{Efficient BackProp}, in \emph{Neural Networks: Tricks of The Trade}, G. B. Orr, and K.-R. M\"{u}ller, Eds. Berlin, Heidelberg: Springler, 1998, pp. 9--48, DOI: https://doi.org/10.1007/978-3-642-35289-8
 
 \end{thebibliography}
 
