@@ -86,6 +86,18 @@ gdzie $L_{px}$ oznacza długość odcinka referencyjnego, odpowiadającą długo
 
 
 \chapter{Architektura modelu głębokiego uczenia}
+\section{Fundamenty Transfer Learningu}
+Zastosowanie architektury \emph{ResNet-18} pozwala na wytrenowanie modelu, zamrażając wagi warstw początkowych. Rozwiązanie to jest możliwe dzięki użyciu metody transferu wiedzy (\emph{transfer learning}), polegającej na nauce kolejnych warstw sieci na podstawie wcześniej wyuczonych warstw.\cite{yosinski_transfer} Filtry konwolucyjne początkowych warstw wyodrębniają cechy niskopoziomowe, odpowiadające filtrom Gabora oraz plamom barwnym, które są ogólne i zdatne do wykorzystania w wielu innych zadaniach i zbiorach danych. \par\emph{ResNet-18} posiadający rozwiniętą pierwszą warstwę przy użyciu bazy \emph{ImageNet}, składającej się z 12 poddrzew, zawierających 5427 synsetów (pojęć) i 3,2 miliona zdjęć, jest już nauczony rozpoznawania gradientów, krawędzi, kształtów.\cite{deng_imagenet} Zastosowanie tego typu architektury usprawnia uzyskanie optymalnych wyników przy predykcji zdjęć satelitarnych, bez konieczności nauki sieci neuronowej od zera.
+
+\section{Mechanizm połączeń skrótowych}
+W \emph{ResNet-18} zostały zaimplementowane połączenia skrótowe, omijające nieliniowe transformacje.\cite{he_resnet} Dzięki temu, w porównaniu do poprzedników, architektura ta eliminuje problem zanikającego gradientu. Problem ten powoduje zatrzymanie procesu optymalizacji wag. W porównaniu do modeli o większej liczbie warstw jak \emph{ResNet-34} czy \emph{ResNet-152}, \emph{ResNet-18} dociera do poprawnych rozwiązań szybciej, kosztem precyzji rozwiązań. Podczas sytuacji awaryjnej w samolocie liczy się jednak każda sekunda. Lepiej uzyskać mniej precyzyjne rozwiązanie w krótkim wymiarze czasowym, niż ryzykować utratą czasu podczas oczekiwania na zakończenie analizy materiału.
+
+\section{Fine-Tuning konwolucyjnej sieci neuronowej}
+Do przeprowadzenia eksperymentu niezbędny jest \emph{Fine-Tuning} architektury \emph{ResNet-18} poprzez zamrożenie wszystkich warstw, odblokowanie warstw trzeciej i czwartej oraz wymianę oryginalnej warstwy klasyfikatora na nową, redukującą wektor cech do 10 wymiarów, w pełni odpowiadającą liczbie klas w zbiorze \emph{EuroSat}. Dzięki temu warstwy trzecia i czwarta uczą się specyficznych tekstur ze zdjęć satelitarnych, zachowując przy tym wiedzę o ogólnych kształtach.
+\par Do minimalizacji błędu użyto optymalizatora \emph{Adam} z niskim współczynnikiem uczenia 1e-4. W przypadku użycia bardziej agresywnej wartości istniałoby ryzyko degradacji wiedzy wyuczonej na \emph{ImageNet}. Łagodniejszy współczynnik chroni uprzednio wyuczone filtry przed nadpisaniem.
+\par Podstawą ewaluacji błędu w fazie uczenia jest funkcja entropii krzyżowej (\emph{Cross Entropy Loss}). Funkcja ta wykorzystuje logarytmiczną karę za błąd, korzystając dodatkowo z wewnętrznej funkcji \emph{Softmax}, która przekształca wyniki na czytelne prawdopodobieństwo w przedziale od 0 do 1. Wymusza to na algorytmie gwałtowną zmianę parametrów w przypadku generowania błędnej klasyfikacji z nienaturalnie dużym stopniem pewności, co znacząco przyspiesza proces uczenia modelu na zbiorze treningowym.
+
+
 \chapter{Wyniki eksperymentu i podsumowanie}
 \chapter{Wnioski}
 
@@ -114,7 +126,14 @@ gdzie $L_{px}$ oznacza długość odcinka referencyjnego, odpowiadającą długo
     \emph{Deep Residual Learning for Image Recognition}, 2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), Las Vegas, NV, USA, 2016, pp. 770--778 DOI: 10.1109/CVPR.2016.90.
 \bibitem{leCun_backprop}
     Y. LeCun, L. Bottou, G. B. Orr, and K.-R. M\"{u}ller,
-    \emph{Efficient BackProp}, in \emph{Neural Networks: Tricks of The Trade}, G. B. Orr, and K.-R. M\"{u}ller, Eds. Berlin, Heidelberg: Springler, 1998, pp. 9--48, DOI: https://doi.org/10.1007/978-3-642-35289-8
+    \emph{Efficient BackProp}, in \emph{Neural Networks: Tricks of The Trade}, G. B. Orr, and K.-R. M\"{u}ller, Eds. Berlin, Heidelberg: Springler, 1998, pp. 9--48, DOI: 10.1007/978-3-642-35289-8.
+\bibitem{yosinski_transfer}
+    J. Yosinski, J. Clune, Y. Bengio, and H. Lipson,
+    \emph{How transferable are features in deep neural
+    networks?}, Advances in Neural Information Processing Systems 27 (NeurIPS), 2014, vol. 27, pp. 3320--3328.
+\bibitem{deng_imagenet}
+    J. Deng, W. Dong, R. Socher, L.-J. Li, K. Li, and L. Fei-Fei,
+    \emph{ImageNet: A Large-Scale Hierarchical Image Database}, IEEE Conference on Computer Vision and Pattern Recognition, Miami, FL, USA, 2009, pp. 248--255, DOI: 10.1109/CVPR.2009.5206848.
 
 \end{thebibliography}
 
