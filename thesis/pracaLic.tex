@@ -30,25 +30,25 @@
 
 \chapter{Przegląd literatury i podstawy teoretyczne}
 \section{Dobór terenu do wykonania procedury awaryjnego lądowania}
-\par Odpowiedni dobór terenu pod awaryjne lądowanie jest kluczowym aspektem odpowiadającym za jego powodzenie. Z uwagi na brak możliwości weryfikacji wszystkich wariantów takich procedur w rzeczywistości, wskazane jest teoretyczne zaznajomienie pilota z najlepszymi lokalizacjami do wylądowania. Według wytycznych Federal Aviation Administration (FAA)\cite{faa_handbook}, niemal każdy teren może posłużyć jako odpowiednie lądowisko awaryjne, pod warunkiem, że pilot potrafi wykorzystać elementy maszyny do ochrony kabiny pasażerskiej i wytracenia energii kinetycznej. 
+\par Odpowiedni dobór terenu pod awaryjne lądowanie jest kluczowym aspektem odpowiadającym za jego powodzenie. Z uwagi na brak możliwości weryfikacji wszystkich wariantów takich procedur w rzeczywistości, wskazane jest teoretyczne zaznajomienie pilota z najlepszymi lokalizacjami do wylądowania. Według wytycznych Federal Aviation Administration (FAA)\cite{faa_handbook}, niemal każdy teren może posłużyć jako odpowiednie lądowisko awaryjne, pod warunkiem że pilot potrafi wykorzystać elementy maszyny do ochrony kabiny pasażerskiej i wytracenia energii kinetycznej. 
 \par Istnieją trzy główne typy lądowań awaryjnych:
 \begin{itemize}
-    \item \textbf{Wymuszone lądowanie awaryjne:} Jest ono najbardziej niebezpieczne. Pilot zmuszony jest do podjęcia szybkiej decyzji np. z powodu pożaru albo niedziałającego silnika.
+    \item \textbf{Wymuszone lądowanie awaryjne:} Jest ono najbardziej niebezpieczne. Pilot zmuszony jest do podjęcia szybkiej decyzji, np. z powodu pożaru albo niedziałającego silnika.
 
     \item \textbf{Lądowanie prewencyjne:}  Często stosowane w momencie, kiedy nie istnieje bezpośrednie ryzyko utraty kontroli nad maszyną, np. w momencie gdy instrumenty pokładowe kapitana i drugiego pilota będą wskazywały inne dane. Warto jednak zauważyć, że tego typu zdarzenie może się przeobrazić w wymuszone lądowanie awaryjne, jeśli pilot zbagatelizuje usterkę lub umyślnie będzie próbował ignorować ostrzeżenia samolotu.
 
     \item \textbf{Lądowanie na wodzie ("Ditching"):} Jest używane w ostateczności, kiedy nie ma szans na bezpieczny powrót na lotnisko lub samolot leci nad terenem gęsto zaludnionym i inny rodzaj lądowania spowodowałby zagrożenie zdrowia lub życia osób postronnych na ziemi. Manewr ten skutkuje głębokim uszkodzeniem maszyny. W ekstremalnych przypadkach również zatonięciem lub rozbiciem się o taflę wody.
 \end{itemize}
 \par Nie można pominąć faktu, iż dobór odpowiedniego miejsca do lądowania jest ściśle skorelowany z wielkością i specyfikacją maszyny. Siła przyziemienia i odległość do zatrzymania rosną proporcjonalnie do kwadratu prędkości. Z tego powodu lżejsza maszyna jest w stanie wylądować na krótkim kawałku łąki, podczas gdy większy samolot pasażerski potrzebuje większego fragmentu autostrady lub szerokiej rzeki.\cite{ntsb_hudson,ntsb_southern}
-\par Poprawnie wykonane lądowanie awaryjne w terenie może być lepszą decyzją niż próba sprowadzenia samolotu na pas startowy. Jednakże w razie błędnej oceny może doprowadzić do katastrofy o jeszcze większej skali. W 1977 roku piloci linii Southern Airways, z powodu dużej wysokości od ziemi i presji, błędnie ocenili szerokość lokalnej autostrady i ruch na niej. W efekcie rozbili maszynę o stację benzynową, powodując jeszcze większą tragedię. \cite{ntsb_southern} Pilot, posiadając możliwość weryfikacji własnej oceny ze statystykami czy analizą satelitarną wygenerowaną przez sztuczną inteligencję, mógłby bardziej racjonalnie podejść do zaistniałej sytuacji i zwiększyć szanse powodzenia operacji awaryjnego lądowania.
+\par Poprawnie wykonane lądowanie awaryjne w terenie może być lepszą decyzją niż próba sprowadzenia samolotu na pas startowy. Jednakże w razie błędnej oceny może to doprowadzić do katastrofy o jeszcze większej skali. W 1977 roku piloci linii Southern Airways, z powodu dużej wysokości od ziemi i presji, błędnie ocenili szerokość lokalnej autostrady i ruch na niej. W efekcie rozbili maszynę o stację benzynową, powodując jeszcze większą tragedię. \cite{ntsb_southern} Pilot, posiadając możliwość weryfikacji własnej oceny z danymi statystycznymi czy analizą satelitarną wygenerowaną przez sztuczną inteligencję, mógłby bardziej racjonalnie podejść do zaistniałej sytuacji i zwiększyć szanse powodzenia operacji awaryjnego lądowania.
 
 % \section{Zastosowanie Konwolucyjnych Sieci Neuronowych (CNN) w klasyfikacji i analizie obrazów satelitarnych}
 
 \section{Ewolucja metod klasyfikacji i analizy obrazów satelitarnych}
 \par Przez ostatnie 50 lat analiza obrazów satelitarnych uległa znaczącej zmianie.\cite{cheng_remote_sensing} Obecnie możemy wyróżnić trzy główne kategorie klasyfikacji zdjęć na podstawie używanych metod:
 \begin{itemize}
-\item \textbf{Podejście klasyczne \emph{(Handcrafted Feature Based Methods)}:} jest to najstarszy sposób klasyfikacji obrazów. Polega na ręcznym projektowaniu filtrów i deskryptorów. Wymaga specjalistycznej wiedzy i dużej ilości czasu. Istnieje możliwość połączenia wielu metod w celu osiągnięcia lepszego rezultatu, jednakże przy bardziej złożonych danych łączenie metod staje się złożone i prowadzi do nieoptymalnych rezultatów.
-\item \textbf{Uczenie bez nadzoru \emph{(Unsupervised Feature Learning Based Methods)}:} jest to pierwszy krok w stronę automatycznego wyodrębniania cech z surowych danych w celu usprawnienia procesu i standaryzacji wyników. Jedną z fundamentalnych metod uczenia bez nadzoru stała się Analiza Głównych Składowych (PCA). Metoda ta polega na redukcji danych do mniejszej liczby nieskorelowanych cech o największej możliwej wariancji. Nowszym algorytmem uczenia bez nadzoru jest algorytm k-średnich (k-means clustering). Polega on na gromadzeniu cech w klastrach, tak żeby wszystkie punkty w jednym klastrze były jak najbardziej podobne, a w innych - jak najbardziej różne. W porównaniu do podejścia klasycznego, uczenie bez nadzoru osiąga zdecydowanie lepsze wyniki, jednak z powodu braku użycia etykiet, metody te są ograniczone i mogą generować nieprawidłowe wyniki. 
+\item \textbf{Podejście klasyczne \emph{(Handcrafted Feature Based Methods)}:} jest to najstarszy sposób klasyfikacji obrazów. Polega na ręcznym projektowaniu filtrów i deskryptorów. Wymaga specjalistycznej wiedzy i dużej ilości czasu. Istnieje możliwość połączenia wielu metod w celu osiągnięcia lepszego rezultatu, jednak przy bardziej złożonych danych łączenie metod staje się skomplikowane i prowadzi do nieoptymalnych rezultatów.
+\item \textbf{Uczenie bez nadzoru \emph{(Unsupervised Feature Learning Based Methods)}:} jest to pierwszy krok w stronę automatycznego wyodrębniania cech z surowych danych w celu usprawnienia procesu i standaryzacji wyników. Jedną z fundamentalnych metod uczenia bez nadzoru stała się Analiza Głównych Składowych (PCA). Metoda ta polega na redukcji danych do mniejszej liczby nieskorelowanych cech o największej możliwej wariancji. Nowszym algorytmem uczenia bez nadzoru jest algorytm k-średnich (k-means clustering). Polega on na gromadzeniu cech w klastrach, tak żeby wszystkie punkty w jednym klastrze były jak najbardziej podobne, a w innych - jak najbardziej różne. W porównaniu do podejścia klasycznego uczenie bez nadzoru osiąga zdecydowanie lepsze wyniki, jednak z powodu braku użycia etykiet metody te są ograniczone i mogą generować nieprawidłowe wyniki. 
 \item \textbf{Uczenie głębokie \emph{(Deep Feature Learning Based Methods)}:} w 2006 roku doszło do przełomu w efektywnym trenowaniu wielowarstwowych struktur, co zapoczątkowało gwałtowny rozwój metod głębokiego uczenia. Od tego czasu naukowcy starają się usprawniać i optymalizować konwolucyjne sieci neuronowe (CNN), które pozwalają na najsprawniejszą i najbardziej zaawansowaną analizę obrazów przekształconych w tensory dzięki użyciu wielu warstw sieci neuronowych. Pierwsze warstwy zazwyczaj wykrywają kontury, podczas gdy kolejne rozpoznają kształty, wzory czy nawet kolory. Największą zaletą tego rozwiązania jest automatyzacja nauki i klasyfikacji zdjęć oraz użycie wielu warstw do analizy zdjęcia. Warto jednak zauważyć, że w porównaniu do uczenia bez nadzoru uczenie głębokie jest procesem znacznie rozbudowanym, wymagającym większych zasobów do przetwarzania obrazów.
 \end{itemize}
 Wdrożenie modelu CNN w systemie lotniczym pozwala na szybkie przystosowanie algorytmu do lokalnej architektury poprzez douczanie (fine-tuning).
@@ -77,12 +77,12 @@ Wdrożenie modelu CNN w systemie lotniczym pozwala na szybkie przystosowanie alg
 \par Aby zapobiec predykcji danych na podstawie bardziej wyróżniających się kolorów, wartości pikseli obrazów zostały przekształcone na liczby zmiennoprzecinkowe, a następnie poddane procesowi normalizacji za pomocą średniej i odchylenia standardowego. Zabieg ten centruje dane do rozkładu normalnego o średniej 0 i odchyleniu 1, co drastycznie przyspiesza proces uczenia i obliczania gradientów.\cite{leCun_backprop}
 
 \section{Kalibracja przestrzenna zewnętrznych danych testowych}
-\par Metoda kalibracji obrazów \emph{Ground Sample Distance} pozwala na uzyskanie optymalnych rezultatów i jest możliwa dzięki jednolitej rozdzielczości zdjęć w zbiorze. Wiedząc, że jedna macierz obrazu przed przeskalowaniem zawiera 64 piksele, a każdy piksel obrazuje 10 metrów długości, można wywnioskować, że każde zdjęcie zawiera 640x640 metrów terenu. Wniosek ten jest odpowiedzią dlaczego dla wytrenowanego modelu problemem jest poprawna predykcja autostrady która na większym zdjęciu satelitarnym może mieć około 20 metrów szerokości. Do przeprowadzenia prawidłowej detekcji materiał graficzny pozyskany z oprogramowania \emph{Google Earth} musi zostać poddany skalowaniu przestrzennemu. Wyrażony w procentach współczynnik skalowania można uzyskać porównując stosunek docelowej szerokości okna wejściowego sieci (224px) do rzeczywistej długości odcinka referencyjnego wyrażonej w pikselach, co opisuje równanie \ref{eq:gsd_scale}:
+\par Metoda kalibracji obrazów \emph{Ground Sample Distance} pozwala na uzyskanie optymalnych rezultatów i jest możliwa dzięki jednolitej rozdzielczości zdjęć w zbiorze. Wiedząc, że jedna macierz obrazu przed przeskalowaniem zawiera 64 piksele, a każdy piksel obrazuje 10 metrów długości, można wywnioskować, że każde zdjęcie zawiera 640x640 metrów terenu. Wniosek ten jest odpowiedzią dlaczego dla wytrenowanego modelu problemem jest poprawna predykcja autostrady która na większym zdjęciu satelitarnym może mieć około 20 metrów szerokości. Do przeprowadzenia prawidłowej detekcji materiał graficzny pozyskany z oprogramowania \emph{Google Earth} musi zostać poddany skalowaniu przestrzennemu. Wyrażony w procentach współczynnik skalowania można uzyskać porównując stosunek docelowej szerokości okna wejściowego sieci (224 px) do rzeczywistej długości odcinka referencyjnego, wyrażonej w pikselach, co opisuje równanie \ref{eq:gsd_scale}:
 \begin{equation}
     \label{eq:gsd_scale}
     P = \frac{224}{L_{px}} \cdot 100\%
 \end{equation}
-gdzie $L_{px}$ oznacza długość odcinka referencyjnego, odpowiadającą długości 2240 metrów w terenie, zmierzonej bezpośrednio na matrycy wejściowej przed procesem normalizacji.
+gdzie $L_{px}$ oznacza długość odcinka referencyjnego, odpowiadającą długości 2240 metrów w terenie, zmierzoną bezpośrednio na matrycy wejściowej przed procesem normalizacji.
 
 
 \chapter{Architektura modelu głębokiego uczenia}
@@ -90,7 +90,7 @@ gdzie $L_{px}$ oznacza długość odcinka referencyjnego, odpowiadającą długo
 Zastosowanie architektury \emph{ResNet-18} pozwala na wytrenowanie modelu, zamrażając wagi warstw początkowych. Rozwiązanie to jest możliwe dzięki użyciu metody transferu wiedzy (\emph{transfer learning}), polegającej na nauce kolejnych warstw sieci na podstawie wcześniej wyuczonych warstw.\cite{yosinski_transfer} Filtry konwolucyjne początkowych warstw wyodrębniają cechy niskopoziomowe, odpowiadające filtrom Gabora oraz plamom barwnym, które są ogólne i zdatne do wykorzystania w wielu innych zadaniach i zbiorach danych. \par\emph{ResNet-18} posiadający rozwiniętą pierwszą warstwę przy użyciu bazy \emph{ImageNet}, składającej się z 12 poddrzew, zawierających 5427 synsetów (pojęć) i 3,2 miliona zdjęć, jest już nauczony rozpoznawania gradientów, krawędzi, kształtów.\cite{deng_imagenet} Zastosowanie tego typu architektury usprawnia uzyskanie optymalnych wyników przy predykcji zdjęć satelitarnych, bez konieczności nauki sieci neuronowej od zera.
 
 \section{Mechanizm połączeń skrótowych}
-W \emph{ResNet-18} zostały zaimplementowane połączenia skrótowe, omijające nieliniowe transformacje.\cite{he_resnet} Dzięki temu, w porównaniu do poprzedników, architektura ta eliminuje problem zanikającego gradientu. Problem ten powoduje zatrzymanie procesu optymalizacji wag. W porównaniu do modeli o większej liczbie warstw jak \emph{ResNet-34} czy \emph{ResNet-152}, \emph{ResNet-18} dociera do poprawnych rozwiązań szybciej, kosztem precyzji rozwiązań. Podczas sytuacji awaryjnej w samolocie liczy się jednak każda sekunda. Lepiej uzyskać mniej precyzyjne rozwiązanie w krótkim wymiarze czasowym, niż ryzykować utratą czasu podczas oczekiwania na zakończenie analizy materiału.
+W \emph{ResNet-18} zostały zaimplementowane połączenia skrótowe, omijające nieliniowe transformacje.\cite{he_resnet} Dzięki temu, w porównaniu do poprzedników, architektura ta eliminuje problem zanikającego gradientu. Problem ten powoduje zatrzymanie procesu optymalizacji wag. W porównaniu do modeli o większej liczbie warstw, takich jak \emph{ResNet-34} czy \emph{ResNet-152}, \emph{ResNet-18} dociera do poprawnych rozwiązań szybciej, kosztem precyzji rozwiązań. Podczas sytuacji awaryjnej w samolocie liczy się jednak każda sekunda. Lepiej uzyskać mniej precyzyjne rozwiązanie w krótkim wymiarze czasowym, niż ryzykować utratą czasu podczas oczekiwania na zakończenie analizy materiału.
 
 \section{Fine-Tuning konwolucyjnej sieci neuronowej}
 Do przeprowadzenia eksperymentu niezbędny jest \emph{Fine-Tuning} architektury \emph{ResNet-18} poprzez zamrożenie wag początkowych bloków przy jednoczesnym odblokowaniu warstw trzeciej i czwartej oraz wymianę oryginalnej warstwy klasyfikatora na nową, redukującą wektor cech do 10 wymiarów, w pełni odpowiadającą liczbie klas w zbiorze \emph{EuroSat}. Dzięki temu warstwy trzecia i czwarta uczą się specyficznych tekstur ze zdjęć satelitarnych, zachowując przy tym wiedzę o ogólnych kształtach.
@@ -99,6 +99,87 @@ Do przeprowadzenia eksperymentu niezbędny jest \emph{Fine-Tuning} architektury 
 
 
 \chapter{Wyniki eksperymentu i podsumowanie}
+\section{Analiza procesu uczenia i walidacji}
+\par Wizualne przedstawienie w formie wykresów, znacząco ułatwia analizę zachowania modelu podczas nauki. W celu ewaluacji procesu wygenerowano krzywe dynamiki błędu i skuteczności, wykorzystując wbudowane mechanizmy śledzenia zdarzeń. (Rysunek \ref{fig:learning_curves})
+\begin{figure}[htbp]
+    \centering
+    \vspace{-0.5cm}
+    \includegraphics[width=0.95\textwidth]{learning_curves_clean.pdf}
+    \vspace{-0.3cm}
+    \caption{Krzywe uczenia modelu ResNet-18: charakterystyka przebiegu funkcji straty CrossEntropyLoss (lewy panel) oraz dynamika wzrostu dokładności walidacyjnej (prawy panel).}
+    \label{fig:learning_curves}
+    \vspace{-0.5cm}
+\end{figure}
+\par Na lewym wykresie można zauważyć, że funkcja straty (\emph{Cross Entropy Loss}) pomimo kilku odchyleń sukcesywnie malała do epoki 15, w której osiągnęła minimum (wartość 0,055). Od tego momentu funkcja ta przez pięć kolejnych epok nie osiągnęła najniższego wyniku, pomimo że strata treningowa nadal spadała, co skutkowało aktywacją mechanizmu \emph{Early Stop}. Mechanizm wczesnego zatrzymania, po pięciu epokach bez poprawy rezultatu, poprawnie zareagował na degradację zdolności generalizacyjnych (przeuczenie). Zjawisko to powoduje, że model zapamiętuje zdjęcia ze zbioru danych.
+\par Pomimo rosnącej funkcji straty w ostatnich epokach, skuteczność klasyfikacyjna ustabilizowała się na poziomie 98\%, co dowodzi wysokiej przydatności wyuczonych wag do zastosowania w zbiorze testowym (całkowicie odizolowanym).
+
+\section{Ewaluacja zdolności generalizacyjnych na zbiorze testowym}
+\par Poniższa macierz (Rysunek \ref{fig:confusion_matrix}) ukazuje wyniki ewaluacji wytrenowanego modelu \emph{ResNet-18} na odizolowanych danych testowych.
+\begin{figure}[htbp]
+    \centering
+    \vspace{-0.2cm}
+    \includegraphics[width=0.65\textwidth]{confusion_matrix_V3.pdf}
+    \vspace{-0.2cm}
+    \caption{Macierz błędów modelu ResNet-18 wyznaczona na zbiorze testowym po zastosowaniu augmentacji rotacyjnej.}
+    \label{fig:confusion_matrix}
+    \vspace{-0.4cm}
+\end{figure}
+\par Na potrzeby testu, oprócz danych treningowych i walidacyjnych, wyodrębniono 4050 surowych obrazów całkowicie odciętych od procesu uczenia. Na podstawie macierzy można zauważyć, że model ten bardzo dobrze generalizuje ze skutecznością 98\%. Dzięki zastosowaniu technik rotacji obrazów, dla klas pierwszej (lasy), dziewiątej (morza i jeziora) oraz piątej (pastwiska), model niemal idealnie rozpoznaje struktury. W innych klasach (klasa szósta - uprawy wieloletnie, czy klasa zero - uprawy roczne) występuje marginalna liczba błędów. Warto zauważyć, że większość błędów jest spowodowana rozpoznawaniem klasy o podobnym kontraście czy gradiencie krawędzi. Na przykład, w przypadku klasy \emph{Uprawy Roczne}, model myli ją z klasą \emph{Uprawy Permanentne}. Z punktu widzenia zastosowania w lotnictwie, takie błędy są akceptowalne, ponieważ oba typy terenu są równie zdatne do przeprowadzenia procedury lądowania awaryjnego.
+\section{Analiza wyników w kontekście lotnictwa}
+\par Poniższe zdjęcia obrazują mapy zdatności terenu do procedury awaryjnego lądowania dla dwóch różnych typów maszyn (Boeing 737 i Cessna 152) w trzech różnych lokalizacjach. Kolory niebieski i zielony oznaczają obszary o bardzo wysokiej zdatności, podczas gdy kolor czerwony wskazuje na obszary z wysokim ryzykiem katastrofy.
+\par Ze względu na uwarunkowania rozdzielczości satelitarnej, model źle rozpoznaje wąskie obiekty, takie jak autostrady czy drogi. Natomiast szerokie obszary takie jak pola uprawne, pastwiska czy lasy są rozpoznawane z wysoką skutecznością. Idealnie można to zaobserwować na rysunku \ref{fig:landing_heatmaps} (Lewa kolumna - Autostrada), gdzie w przypadku Boeinga 737, większość obszarów oznaczona jest na czerwono. W przypadku Cessny 152, model odpowiednio wykrył obszary rolne i pastwiska jako zdatne do lądowania.
+\par Duże samoloty pasażerskie, takie jak Boeing 737, ważą około 80 ton i mają większą prędkość lądowania (około 240km/h), co wymaga większej przestrzeni do zatrzymania. Wysoka masa i prędkość przekładają się na większą wartość energii kinetycznej w momencie styczności z podłożem. 
+\begin{equation}
+    E_k = \frac{mv^2}{2}
+\end{equation}
+\par Z tego powodu, w przypadku lądowania na miękkiej glebie, istnieje ryzyko zakopania się maszyny, co może doprowadzić do gwałtownego wytracenia prędkości zakończonego kapotażem i rozerwaniem kadłuba. 
+\par W przypadku mniejszego samolotu jakim jest Cessna 152, waga i prędkość lądowania są drastycznie mniejsze (około 1 tony i 160km/h). Wartość energii kinetycznej w momencie lądowania jest znacznie mniejsza, co pozwala na bezpieczną próbę lądowania nawet na terenach rolnych.
+\par Energia kinetyczna rośnie proporcjonalnie do masy oraz kwadratu prędkości. Z tego powodu, różnica zniszczeń między samolotami pasażerskimi a awionetkami jest kolosalna, co uzasadnia bardziej rygorystyczne wagi oceny zdatności do lądowania dla samolotów pasażerskich niż awionetek.
+\begin{figure}[htbp]
+    \centering
+    \vspace{-0.2cm}
+    
+    \begin{minipage}{0.32\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{V3/landing_heatmap_b737_autobahn.png}
+        \caption*{Boeing 737 (Autostrada)}
+    \end{minipage}\hfill
+    \begin{minipage}{0.32\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{V3/landing_heatmap_b737_gdn.png}
+        \caption*{Boeing 737 (Gdańsk)}
+    \end{minipage}\hfill
+    \begin{minipage}{0.32\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{V3/landing_heatmap_b737_bay.png}
+        \caption*{Boeing 737 (Bayreuth)}
+    \end{minipage}
+    
+    \vspace{0.3cm}
+    
+    \begin{minipage}{0.32\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{V3/landing_heatmap_c152_autobahn.png}
+        \caption*{Cessna 152 (Autostrada)}
+    \end{minipage}\hfill
+    \begin{minipage}{0.32\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{V3/landing_heatmap_c152_gdn.png}
+        \caption*{Cessna 152 (Gdańsk)}
+    \end{minipage}\hfill
+    \begin{minipage}{0.32\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{V3/landing_heatmap_c152_bay.png}
+        \caption*{Cessna 152 (Bayreuth)}
+    \end{minipage}
+    
+    \vspace{-0.2cm}
+    \caption{Zestawienie map zdatności terenu do procedury awaryjnego lądowania.}
+    \label{fig:landing_heatmaps}
+    \vspace{-0.4cm}
+
+\end{figure}
+
 \chapter{Wnioski}
 
 \begin{thebibliography}{9}
