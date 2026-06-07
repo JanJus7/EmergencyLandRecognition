@@ -181,6 +181,10 @@ Do przeprowadzenia eksperymentu niezbędny jest \emph{Fine-Tuning} architektury 
 \end{figure}
 
 \chapter{Wnioski}
+Na podstawie przytoczonych obrazów satelitarnych ukazujących miejsca zdatne do lądowania (Rysunek \ref{fig:landing_heatmaps}), oraz macierzy błędów modelu sztucznej inteligencji (Rysunek \ref{fig:confusion_matrix}). Można wyciągnąć wnioski, że sztuczna inteligencja jest w stanie pomóc pilotowi w skutecznym sprowadzeniu samolotu na ziemię. Wytrenowany model \emph{ResNet-18} osiągnął niemal bezbłędną skuteczność (ponad 98\%), co potwierdza użyteczność konwolucyjnych sieci neuronowych (\emph{CNN}) w krytycznych analizach terenowych.
+\par Należy jednak pamiętać, że sieć neuronowa nie potrafi pilotować samolotu. To pilot ma za zadanie podjąć ostateczną decyzję i skutecznie sprowadzić maszynę na ziemię. Możliwość oszacowania idealnego miejsca pod awaryjne lądowanie zwiększa jednak szansę na jego powodzenie.
+\par W powyższym eksperymencie nałożenie map przydatności zrealizowano za pomocą heurystycznego systemu wag. Wagi w sposób uproszczony i eksperymentalny odzwierciedlają krytyczną różnicę w zdatności gruntu do przeprowadzenia manewru awaryjnego lądowania. 
+\par W przyszłości wskazane jest zastąpienie tego systemu dynamicznym silnikiem, który w czasie rzeczywistym analizowałby prędkość i wagę maszyny oraz współczynniki tarcia dla różnych powierzchni. Dodatkowo ważnym krokiem w celu ulepszenia wyniku predykcji byłaby integracja systemu z bazą komercyjnych obrazów o wysokiej rozdzielczości oraz systemami pogodowymi działającymi w czasie rzeczywistym.
 
 \begin{thebibliography}{9}
 
