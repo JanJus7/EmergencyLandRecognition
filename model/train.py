@@ -11,8 +11,6 @@ print(f"Using device: {device}")
 
 patience = 5
 delta = 0.001
-best_val_loss = float("inf")
-no_improvement_count = 0
 
 
 class EarlyStopping:
@@ -29,7 +27,6 @@ class EarlyStopping:
             self.best_loss = val_loss
             self.no_improvement_count = 0
             torch.save(model.state_dict(), "resnet18_finetuned.pth")
-
         elif val_loss < self.best_loss - self.delta:
             self.best_loss = val_loss
             self.no_improvement_count = 0
@@ -66,7 +63,9 @@ optimizer = torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters(
 
 early_stopping = EarlyStopping(patience=patience, delta=delta, verbose=True)
 
-training_history = []
+with open("training_history.csv", "w", newline="") as f:
+    writer = csv.writer(f)
+    writer.writerow(["Epoch", "Train_Loss", "Val_Loss", "Val_Accuracy"])
 
 for epoch in range(1, 100):
 
@@ -86,9 +85,8 @@ for epoch in range(1, 100):
         loss.backward()
         optimizer.step()
 
-        train_loss += loss.item()
-
         running_loss += loss.item() * images.size(0)
+        
     epoch_loss = running_loss / len(train_loader.dataset)
 
     print(f"Epoch {epoch}/100, Loss: {epoch_loss:.4f}")
@@ -108,24 +106,19 @@ for epoch in range(1, 100):
 
             correct += (predicted == labels).sum().item()
             total += labels.size(0)
-
-            accuracy = correct / total
             val_loss += loss.item() * images.size(0)
 
+    accuracy = correct / total
     val_loss /= len(val_loader.dataset)
 
     early_stopping.check_early_stop(val_loss, model)
 
-    training_history.append([epoch, epoch_loss, val_loss, accuracy])
+    with open("training_history.csv", "a", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow([epoch, epoch_loss, val_loss, accuracy])
 
     print(f"Epoch {epoch}/100, Val Loss: {val_loss:.4f}, Val Accuracy: {accuracy:.4f}")
 
     if early_stopping.early_stop:
         print(f"Early stopping at epoch {epoch}")
         break
-
-with open("training_history.csv", "w", newline="") as f:
-    writer = csv.writer(f)
-    writer.writerow(["Epoch", "Train_Loss", "Val_Loss", "Val_Accuracy"])
-    writer.writerows(training_history)
-print("Zapisano historię treningu do pliku training_history.csv")
